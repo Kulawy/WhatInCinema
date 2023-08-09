@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">WhatInCinema</string>
+    <string name="screen_title_movies">Movies</string>
+    <string name="screen_tittle_movie">Movie Details</string>
+
+    <string name="dialog_error_title">Error</string>
+    <string name="dialog_error_message">Movie can\'t be fetched</string>
+    <string name="dialog_confirmation">OK</string>
+
+    <string name="preview_title">Title Sample</string>
+    <string name="preview_text">Text Sample</string>
+
+    <string name="poster_content_description">Poster Image</string>
+
+    <string name="label_title">Title</string>
+
+    <string name="icn_search_clear_content_description">Clear</string>
+    <string name="icn_search_back_content_description">Back</string>
+
+    <string name="icn_error_content_description">Error on fetching image</string>
+
+
+
+</resources>

@@ -1,0 +1,55 @@
+package com.gerapp.whatincinema.domain.data
+
+import com.gerapp.whatincinema.data.network.model.MovieDetailsDto
+
+data class MovieDetails(
+    val id: Int = -1,
+    val adult: Boolean? = null,
+    val backdropPath: String? = null,
+//   val belongsToCollection: BelongsToCollection? = BelongsToCollection(),
+    val budget: Int? = null,
+//   val genres: ArrayList<Genres> = arrayListOf(),
+    val homepage: String? = null,
+    val imdbId: String? = null,
+    val originalLanguage: String? = null,
+    val originalTitle: String? = null,
+    val overview: String? = null,
+    val popularity: Double? = null,
+    val posterPath: String? = null,
+//   val productionCompanies: ArrayList<ProductionCompanies> = arrayListOf(),
+//   val productionCountries: ArrayList<ProductionCountries> = arrayListOf(),
+    val releaseDate: String? = null,
+    val revenue: Int? = null,
+    val runtime: Int? = null,
+//   val spokenLanguages: ArrayList<SpokenLanguages> = arrayListOf(),
+    val status: String? = null,
+    val tagline: String? = null,
+    val title: String? = null,
+    val video: Boolean? = null,
+    val voteAverage: Double? = null,
+    val voteCount: Int? = null,
+) {
+    fun doDto(): MovieDetailsDto =
+        MovieDetailsDto(
+            id,
+            adult,
+            backdropPath,
+            budget,
+            homepage,
+            imdbId,
+            originalLanguage,
+            originalTitle,
+            overview,
+            popularity,
+            posterPath,
+            releaseDate,
+            revenue,
+            runtime,
+            status,
+            tagline,
+            title,
+            video,
+            voteAverage,
+            voteCount,
+        )
+}

@@ -1,0 +1,40 @@
+
+buildscript {
+    ext {
+        compose_version = '1.4.3'
+        lifecycle_version = "2.6.1"
+        hilt_version = '2.44.2'
+        material3_version = '1.1.1'
+        room_version = '2.5.2'
+        nav_version = '2.6.0'
+        paging_version = "3.1.1"
+        compose_hilt_navigation_version = "1.0.0"
+        compose_constraint_layout = "1.0.1"
+        compose_paging_version = "3.2.0"
+        retrofit_version = "2.9.0"
+        okhttp_version = "4.10.0"
+        kotlin_version = "1.8.10"
+        room_version = "2.5.2"
+        junit5_version = "5.9.1"
+        test_version = "1.4.0"
+        test_orchestrator_Version = "1.4.1"
+        cucumber_android_version = "4.9.0"
+        cucumber_pico = "4.8.1"
+        espresso_version = "3.5.1"
+        mockk_version = "1.13.2"
+        coroutines_test_version = "1.7.3"
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+    }
+}// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+
+plugins {
+    id 'com.android.application' version '7.4.1' apply false
+    id 'com.android.library' version '7.4.1' apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
+    id 'org.jlleitschuh.gradle.ktlint' version '11.1.0'
+    id 'com.google.dagger.hilt.android' version '2.44' apply false
+}
