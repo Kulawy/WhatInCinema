@@ -5,8 +5,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 val LocalDim = compositionLocalOf { Dimensions() }
-val LocalAlpha = compositionLocalOf { Alpha() }
-val LocalDrawOrder = compositionLocalOf { DrawOrder() }
+val LocalAlpha = compositionLocalOf { Alphas() }
+val LocalDrawOrder = compositionLocalOf { DrawOrders() }
+val LocalAnim = compositionLocalOf { AnimationProperties() }
 
 data class Dimensions(
     val zero: Dp = 0.dp,
@@ -22,13 +23,22 @@ data class Dimensions(
     val favouritesListButtonSize: Dp = 64.dp,
 )
 
-data class Alpha(
+data class Alphas(
     val transparent25: Float = 0.25F,
     val transparent50: Float = 0.5F,
     val transparent75: Float = 0.75F,
 )
 
-data class DrawOrder(
+data class DrawOrders(
     val onFront: Float = 1.0F,
     val onVeryFront: Float = 10.0F,
+)
+
+data class AnimationProperties(
+    val shortDuration: Int = 200,
+    val normalDuration: Int = 500,
+    val longDuration: Int = 1000,
+    val veryLongDuration: Int = 3000,
+    val quoterRotation: Float = 90.0F,
+    val zeroRotation: Float = 0.0F,
 )

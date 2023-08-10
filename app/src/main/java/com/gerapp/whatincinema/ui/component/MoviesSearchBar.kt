@@ -51,6 +51,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest.Builder
 import com.gerapp.whatincinema.data.ImagePathProvider
 import com.gerapp.whatincinema.domain.data.MovieSnap
+import com.gerapp.whatincinema.ui.utils.LocalAnim
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
@@ -92,23 +93,26 @@ fun MoviesSearchBar(
                         visible = text.isBlank() && active,
                         enter = expandIn(
                             animationSpec = tween(
-                                delayMillis = 200,
-                                durationMillis = 200,
+                                delayMillis = LocalAnim.current.shortDuration,
+                                durationMillis = LocalAnim.current.shortDuration,
                                 easing = FastOutLinearInEasing,
                             ),
                             expandFrom = Alignment.Center,
                         ) + fadeIn(
                             animationSpec = tween(
-                                durationMillis = 200,
-                                delayMillis = 200,
+                                durationMillis = LocalAnim.current.shortDuration,
+                                delayMillis = LocalAnim.current.shortDuration,
                                 easing = FastOutLinearInEasing,
                             ),
                         ),
                         exit = shrinkOut(
-                            animationSpec = tween(100, easing = LinearOutSlowInEasing),
+                            animationSpec = tween(
+                                LocalAnim.current.shortDuration,
+                                easing = LinearOutSlowInEasing,
+                            ),
                             shrinkTowards = Alignment.Center,
                         ) + fadeOut(
-                            animationSpec = tween(durationMillis = 200),
+                            animationSpec = tween(durationMillis = LocalAnim.current.shortDuration),
                         ),
                     ) {
                         Icon(
@@ -124,17 +128,23 @@ fun MoviesSearchBar(
                     AnimatedVisibility(
                         visible = text.isNotBlank(),
                         enter = expandIn(
-                            animationSpec = tween(200, easing = FastOutLinearInEasing),
+                            animationSpec = tween(
+                                LocalAnim.current.shortDuration,
+                                easing = FastOutLinearInEasing,
+                            ),
                             expandFrom = Alignment.Center,
                         ) + fadeIn(
-                            animationSpec = tween(durationMillis = 200),
+                            animationSpec = tween(durationMillis = LocalAnim.current.shortDuration),
                         ),
                         exit = shrinkOut(
-                            animationSpec = tween(500, easing = LinearOutSlowInEasing),
+                            animationSpec = tween(
+                                LocalAnim.current.normalDuration,
+                                easing = LinearOutSlowInEasing,
+                            ),
                             shrinkTowards = Alignment.Center,
                         ) + fadeOut(
                             animationSpec = tween(
-                                durationMillis = 500,
+                                durationMillis = LocalAnim.current.normalDuration,
                                 easing = LinearOutSlowInEasing,
                             ),
                         ),
@@ -143,10 +153,14 @@ fun MoviesSearchBar(
                             by transition.animateFloat(
                                 label = "rotation",
                                 transitionSpec = {
-                                    tween(durationMillis = 200)
+                                    tween(durationMillis = LocalAnim.current.shortDuration)
                                 },
                             ) { state ->
-                                if (state == EnterExitState.Visible) 90.0F else 0.0F
+                                if (state == EnterExitState.Visible) {
+                                    LocalAnim.current.quoterRotation
+                                } else {
+                                    LocalAnim.current.zeroRotation
+                                }
                             }
                         Icon(
                             imageVector = Icons.Default.Clear,
