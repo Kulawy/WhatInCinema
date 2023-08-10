@@ -1,6 +1,6 @@
 
 <!-- # What In Cinema -->
-<center><img src="assets/WhatInCinemaLogo.png" height=270px alt="WhatInCinema application logo" ></center>
+<div align="center"><img src="assets/WhatInCinemaLogo.png" height=320px alt="WhatInCinema application logo" style=" background-image: radial-gradient(white 0%, transparent 75%, transparent 40%)"></div>
 
 
 ***My Android project Built with Coroutines, Flow and Jetpack Components, Jetpack Compose. Experimenting with some MVI/MVVM architecture. Probably current architecture is MVI/MVP as state is separate by Screens and each Screen has it's own ViewModel.
@@ -32,11 +32,11 @@ something.***
 - [Material 3](https://m3.material.io/)
 - [Material 3 Search](https://m3.material.io/components/search/overview)
 
-## <br/><br/>Useful links
+## <br/>Useful links
 
 - [Material 3 for Compose] (https://developer.android.com/jetpack/compose/designsystems/material3)
 
-## <br/><br/> How to run this app :runner:
+## <br/>How to run this app :runner:
 
 - Clone this repository
 - Register in  [TMDB](https://developers.themoviedb.org/) and get the authorization token. Copy it
@@ -44,7 +44,7 @@ something.***
   <img src=https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg alt="themoviedb api logo" height="50px">
 - Build the application
 
-### <br/><br/> I faced couple interesting things while app creation process. Most of them are related to using Arndroid specific tools like Pagging 3 or Jetpack Compose in term of Clean MVI/MVVM architecture. Maybe some article ? We will see. Stay tuned"
+#### <br/><br/> I faced couple interesting things while app creation process. Most of them are related to using Arndroid specific tools like Pagging 3 or Jetpack Compose in term of Clean MVI/MVVM architecture. Maybe some article ? We will see. Stay tuned"
 ## <br/>Conclusions 
 - ### Architecture not so clean :see_no_evil:
 > As I experiment a little with Paging 3.0 library, I don't think It would be a way (or it's not so

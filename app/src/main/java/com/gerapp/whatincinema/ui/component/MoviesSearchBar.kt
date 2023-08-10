@@ -1,8 +1,11 @@
 package com.gerapp.whatincinema.ui.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterExitState
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
@@ -17,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -48,19 +53,23 @@ import com.gerapp.whatincinema.data.ImagePathProvider
 import com.gerapp.whatincinema.domain.data.MovieSnap
 import timber.log.Timber
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun MoviesSearchBar(
     modifier: Modifier = Modifier,
     suggestions: LazyPagingItems<MovieSnap>? = null,
     updateSuggestions: (String?) -> Unit = {},
-    onSearch: (String) -> Unit = {},
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     var active by rememberSaveable { mutableStateOf(false) }
 
     Box(modifier.fillMaxWidth()) {
-        Box(Modifier.semantics { isContainer = true }.zIndex(1f).fillMaxWidth()) {
+        Box(
+            Modifier
+                .semantics { isContainer = true }
+                .zIndex(1f)
+                .fillMaxWidth(),
+        ) {
             SearchBar(
                 modifier = Modifier.align(Alignment.TopCenter),
                 query = text,
@@ -80,12 +89,20 @@ fun MoviesSearchBar(
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 trailingIcon = {
                     AnimatedVisibility(
-                        visible = text.isNotBlank(),
+                        visible = text.isBlank() && active,
                         enter = expandIn(
-                            animationSpec = tween(200, easing = FastOutLinearInEasing),
+                            animationSpec = tween(
+                                delayMillis = 200,
+                                durationMillis = 200,
+                                easing = FastOutLinearInEasing,
+                            ),
                             expandFrom = Alignment.Center,
                         ) + fadeIn(
-                            animationSpec = tween(durationMillis = 200),
+                            animationSpec = tween(
+                                durationMillis = 200,
+                                delayMillis = 200,
+                                easing = FastOutLinearInEasing,
+                            ),
                         ),
                         exit = shrinkOut(
                             animationSpec = tween(100, easing = LinearOutSlowInEasing),
@@ -95,13 +112,52 @@ fun MoviesSearchBar(
                         ),
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Clear,
+                            imageVector = Icons.Default.ArrowBack,
                             contentDescription = null,
                             modifier = Modifier.clickable {
                                 updateSuggestions(null)
                                 text = ""
                                 active = false
                             },
+                        )
+                    }
+                    AnimatedVisibility(
+                        visible = text.isNotBlank(),
+                        enter = expandIn(
+                            animationSpec = tween(200, easing = FastOutLinearInEasing),
+                            expandFrom = Alignment.Center,
+                        ) + fadeIn(
+                            animationSpec = tween(durationMillis = 200),
+                        ),
+                        exit = shrinkOut(
+                            animationSpec = tween(500, easing = LinearOutSlowInEasing),
+                            shrinkTowards = Alignment.Center,
+                        ) + fadeOut(
+                            animationSpec = tween(
+                                durationMillis = 500,
+                                easing = LinearOutSlowInEasing,
+                            ),
+                        ),
+                    ) {
+                        val rotateAnimation: Float
+                            by transition.animateFloat(
+                                label = "rotation",
+                                transitionSpec = {
+                                    tween(durationMillis = 200)
+                                },
+                            ) { state ->
+                                if (state == EnterExitState.Visible) 90.0F else 0.0F
+                            }
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .rotate(degrees = rotateAnimation)
+                                .clickable {
+                                    updateSuggestions(null)
+                                    text = ""
+                                    active = false
+                                },
                         )
                     }
                 },
