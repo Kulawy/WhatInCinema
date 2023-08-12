@@ -1,6 +1,6 @@
 
 <!-- # What In Cinema -->
-<div align="center"><img src="assets/WhatInCinemaLogo.png" height=320px alt="WhatInCinema application logo" style=" background-image: radial-gradient(white 0%, transparent 75%, transparent 40%)"></div>
+<div align="center" style=" background-image: radial-gradient(white 0%, transparent 69%, transparent 40%)"><img src="assets/WhatInCinemaLogo.png" height=320px alt="WhatInCinema application logo" style="background-color: transparent;"></div>
 
 
 ***My Android project Built with Coroutines, Flow and Jetpack Components, Jetpack Compose. Experimenting with some MVI/MVVM architecture. Probably current architecture is MVI/MVP as state is separate by Screens and each Screen has it's own ViewModel.
@@ -51,4 +51,25 @@ something.***
 > obvious) to implement it with domain layer. The Domain layer ( talking about UseCase) that
 > communicate with UI layer by Result. I need to dig further and think about it.
 
+## License
+```
+Copyright (c) 2023 Jakub Geroń
 
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```

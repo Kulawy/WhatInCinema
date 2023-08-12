@@ -12,12 +12,17 @@
 
     <string name="poster_content_description">Poster Image</string>
 
-    <string name="label_title">Title</string>
+    <string name="title_label">Title</string>
+    <string name="date_label">Date</string>
+    <string name="rate_label">Rate</string>
+    <string name="description_label">Description</string>
 
     <string name="icn_search_clear_content_description">Clear</string>
     <string name="icn_search_back_content_description">Back</string>
-
     <string name="icn_error_content_description">Error on fetching image</string>
+    <string name="icn_favourite_content_description">Favourite Icon</string>
+
+
 
 
 
