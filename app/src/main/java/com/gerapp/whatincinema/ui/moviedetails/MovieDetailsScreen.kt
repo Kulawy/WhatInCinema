@@ -151,15 +151,27 @@ fun MovieDetailsContent(modifier: Modifier, movieDetails: MovieDetails) {
         ),
     ) {
         MovieDetailsTitleComponent(modifier, movieDetails.title ?: "")
-        MovieDetailsInfoComponent(modifier, "Date", movieDetails.releaseDate ?: "")
-        MovieDetailsInfoComponent(modifier, "Rate", movieDetails.voteAverage?.toString() ?: "")
-        MovieDetailsInfoComponent(modifier, "Description", movieDetails.overview?.toString() ?: "")
+        MovieDetailsInfoComponent(
+            modifier,
+            stringResource(id = R.string.date_label),
+            movieDetails.releaseDate ?: "",
+        )
+        MovieDetailsInfoComponent(
+            modifier,
+            stringResource(id = R.string.rate_label),
+            movieDetails.voteAverage?.toString() ?: "",
+        )
+        MovieDetailsInfoComponent(
+            modifier,
+            stringResource(id = R.string.description_label),
+            movieDetails.overview ?: "",
+        )
     }
 }
 
 @Composable
 fun MovieDetailsTitleComponent(modifier: Modifier, movieTitle: String) {
-    Text(text = stringResource(id = R.string.label_title))
+    Text(text = stringResource(id = R.string.title_label))
     Text(
         text = movieTitle,
         style = Typography.titleLarge,
@@ -206,7 +218,7 @@ fun FavouriteIcon(modifier: Modifier, onFavouriteClick: () -> Unit, isFavourite:
     ) {
         Icon(
             imageVector = Icons.Outlined.Star,
-            contentDescription = "Favourites",
+            contentDescription = stringResource(id = R.string.icn_favourite_content_description),
             modifier = modifier
                 .size(LocalDim.current.favouritesIconSize),
             tint = iconColor,
