@@ -32,8 +32,8 @@ data class MovieDetailsDto(
     @SerialName("video") val video: Boolean? = null,
     @SerialName("vote_average") val voteAverage: Double? = null,
     @SerialName("vote_count") val voteCount: Int? = null,
-) {
-    fun toDomain(): MovieDetails =
+) : DtoModel {
+    override fun toDomain(): MovieDetails =
         MovieDetails(
             id,
             adult,
@@ -53,7 +53,7 @@ data class MovieDetailsDto(
             tagline,
             title,
             video,
-            voteAverage,
+            voteAverage?.toFloat(),
             voteCount,
         )
 }

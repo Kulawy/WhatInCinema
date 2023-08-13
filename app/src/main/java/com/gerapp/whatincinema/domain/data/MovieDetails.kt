@@ -26,10 +26,10 @@ data class MovieDetails(
     val tagline: String? = null,
     val title: String? = null,
     val video: Boolean? = null,
-    val voteAverage: Double? = null,
+    val voteAverage: Float? = null,
     val voteCount: Int? = null,
-) {
-    fun doDto(): MovieDetailsDto =
+) : DomainModel {
+    override fun toDto(): MovieDetailsDto =
         MovieDetailsDto(
             id,
             adult,
@@ -49,7 +49,7 @@ data class MovieDetails(
             tagline,
             title,
             video,
-            voteAverage,
+            voteAverage?.toDouble(),
             voteCount,
         )
 }
