@@ -8,10 +8,14 @@ import com.gerapp.whatincinema.domain.favourite.FavouriteAddUseCase
 import com.gerapp.whatincinema.domain.favourite.FavouriteCheckUseCase
 import com.gerapp.whatincinema.domain.favourite.FavouriteDeleteUseCase
 import com.gerapp.whatincinema.domain.movie.GetMovieDetailsUseCase
+import com.gerapp.whatincinema.ui.model.MovieDetailsUiModel
 import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiIntent.FavouriteChange
 import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiIntent.LoadDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
@@ -39,9 +43,6 @@ class MovieDetailsViewModel @Inject constructor(
         when (intent) {
             is FavouriteChange -> onFavouriteChange()
             is LoadDetails -> fetchMovieDetails(intent.movieId)
-//            is OnCategoriesScreenStart -> refreshLocalCart()
-            else -> {
-            }
         }
     }
 
@@ -49,37 +50,54 @@ class MovieDetailsViewModel @Inject constructor(
         Timber.d("ON FAVOURITE CHANGE START: ${uiState.value.isFavourite}")
         if (uiState.value.isFavourite) {
             uiState.value.movie?.let { movieDetails ->
-                favouriteDeleteUseCase(movieDetails.id)
-                    .flowOn(defaultDispatcher)
+                favouriteDeleteUseCase(movieDetails.movieId).flowOn(defaultDispatcher)
                     .launchIn(viewModelScope)
             }
         } else {
             uiState.value.movie?.let { movieDetails ->
-                favouriteAddUseCase(movieDetails.id)
-                    .flowOn(defaultDispatcher)
+                favouriteAddUseCase(movieDetails.movieId).flowOn(defaultDispatcher)
                     .launchIn(viewModelScope)
             }
         }
         publishState { copy(isFavourite = !isFavourite) }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun fetchMovieDetails(movieId: Int) {
-        getMovieDetailsUseCase(movieId)
-            .onStart {
-                publishState { copy(isLoading = true) }
-            }.onEach { movieDetailsResult ->
-                movieDetailsResult.onSuccess {
-                    publishState { copy(movie = it) }
-                }
-            }.onCompletion {
-                publishState { copy(isLoading = false) }
-            }.launchIn(viewModelScope)
+        getMovieDetailsUseCase(movieId).flatMapMerge { result ->
+            flowOf(
+                result.fold(
+                    {
+                        Result.success(
+                            MovieDetailsUiModel(
+                                movieId = it.id,
+                                title = it.title ?: "",
+                                releaseDate = it.releaseDate ?: "",
+                                overview = it.overview ?: "",
+                                posterPath = it.posterPath ?: "",
+                                voteAverage = it.voteAverage ?: 0.0F,
+                            ),
+                        )
+                    },
+                    {
+                        Result.failure(it)
+                    },
+                ),
+            )
+        }.onStart {
+            publishState { copy(isLoading = true) }
+        }.onEach { movieDetailsResult ->
+            movieDetailsResult.onSuccess {
+                publishState { copy(movie = it) }
+            }
+        }.onCompletion {
+            publishState { copy(isLoading = false) }
+        }.launchIn(viewModelScope)
 
-        favouriteCheckUseCase(movieId)
-            .onEach { isFavouriteResult ->
-                isFavouriteResult.onSuccess {
-                    publishState { copy(isFavourite = it) }
-                }
-            }.launchIn(viewModelScope)
+        favouriteCheckUseCase(movieId).onEach { isFavouriteResult ->
+            isFavouriteResult.onSuccess {
+                publishState { copy(isFavourite = it) }
+            }
+        }.launchIn(viewModelScope)
     }
 }

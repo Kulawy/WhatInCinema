@@ -20,9 +20,8 @@ data class MovieSnapDto(
     @SerialName("video") var video: Boolean? = null,
     @SerialName("vote_average") var voteAverage: Double? = null,
     @SerialName("vote_count") var voteCount: Int? = null,
-) {
-
-    fun toDomain(): MovieSnap =
+) : DtoModel {
+    override fun toDomain(): MovieSnap =
         MovieSnap(
             id,
             adult,

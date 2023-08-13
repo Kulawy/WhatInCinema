@@ -35,6 +35,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,9 +44,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.gerapp.whatincinema.R
 import com.gerapp.whatincinema.data.ImagePathProvider
-import com.gerapp.whatincinema.domain.data.MovieDetails
 import com.gerapp.whatincinema.ui.component.ErrorDialog
 import com.gerapp.whatincinema.ui.component.LoadingCircular
+import com.gerapp.whatincinema.ui.model.MovieDetailsUiModel
 import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiIntent.FavouriteChange
 import com.gerapp.whatincinema.ui.theme.Typography
 import com.gerapp.whatincinema.ui.utils.LocalDim
@@ -109,7 +110,7 @@ fun MovieDetailsScreen(
             Column(modifier = modifier.verticalScroll(rememberScrollState())) {
                 MovieDetailsImage(
                     modifier = modifier,
-                    imagePath = movieDetails.posterPath ?: "",
+                    imagePath = movieDetails.posterPath,
                 )
                 Spacer(modifier = Modifier.size(LocalDim.current.spaceSmall))
                 MovieDetailsContent(
@@ -142,7 +143,7 @@ fun MovieDetailsScreen(
 }
 
 @Composable
-fun MovieDetailsContent(modifier: Modifier, movieDetails: MovieDetails) {
+fun MovieDetailsContent(modifier: Modifier, movieDetails: MovieDetailsUiModel) {
     Column(
         modifier = modifier.padding(
             start = LocalDim.current.spaceMedium,
@@ -150,27 +151,24 @@ fun MovieDetailsContent(modifier: Modifier, movieDetails: MovieDetails) {
             bottom = LocalDim.current.spaceExtraLarge,
         ),
     ) {
-        MovieDetailsTitleComponent(modifier, movieDetails.title ?: "")
+        MovieDetailsTitleComponent(movieDetails.title)
         MovieDetailsInfoComponent(
-            modifier,
             stringResource(id = R.string.date_label),
-            movieDetails.releaseDate ?: "",
+            movieDetails.releaseDate,
         )
         MovieDetailsInfoComponent(
-            modifier,
             stringResource(id = R.string.rate_label),
-            movieDetails.voteAverage?.toString() ?: "",
+            movieDetails.voteAverage.toString(),
         )
         MovieDetailsInfoComponent(
-            modifier,
             stringResource(id = R.string.description_label),
-            movieDetails.overview ?: "",
+            movieDetails.overview,
         )
     }
 }
 
 @Composable
-fun MovieDetailsTitleComponent(modifier: Modifier, movieTitle: String) {
+fun MovieDetailsTitleComponent(movieTitle: String) {
     Text(text = stringResource(id = R.string.title_label))
     Text(
         text = movieTitle,
@@ -179,8 +177,11 @@ fun MovieDetailsTitleComponent(modifier: Modifier, movieTitle: String) {
 }
 
 @Composable
-fun MovieDetailsInfoComponent(modifier: Modifier, label: String, content: String) {
-    Text(text = label)
+fun MovieDetailsInfoComponent(label: String, content: String) {
+    Text(
+        text = label,
+        fontStyle = FontStyle.Italic,
+    )
     Text(
         text = content,
         style = Typography.titleMedium,
