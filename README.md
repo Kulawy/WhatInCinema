@@ -1,6 +1,6 @@
 
 <!-- # What In Cinema -->
-<div align="center" style=" background-image: radial-gradient(white 0%, transparent 69%, transparent 40%)"><img src="assets/WhatInCinemaLogo.png" height=320px alt="WhatInCinema application logo" style="background-color: transparent;"></div>
+<div align="center"><img src="assets/WhatInCinemaLogo.png" height=320px alt="WhatInCinema application logo"></div>
 
 
 ***My Android project Built with Coroutines, Flow and Jetpack Components, Jetpack Compose. Experimenting with some MVI/MVVM architecture. Probably current architecture is MVI/MVP as state is separate by Screens and each Screen has it's own ViewModel.
@@ -11,9 +11,15 @@ I will try to update code to use latest stuff but I treat it more like training 
 something.***
 
 ## <br/><br/>Screenshot :rice_scene:
-![Movie list screenshot](assets/MovieListScreen.png?raw=true)
-![Movie details screenshot](assets/MovieDetailsScreen.png?raw=true)
-![Movie search screenshot](assets/SearchScreen.png?raw=true)
+<div align="center"><img src="assets/MovieListScreenS.png" height=640px alt="Movie list screenshot"></div>
+<p style="text-align: center;"><em>Img-1. Move list Screen</em></p>
+<div align="center"><img src="assets/MovieDetailsScreenS.png" height=640px alt="Movie details screenshot"></div>
+<p style="text-align: center;"><em>Img-1. Move Details Screen</em></p>
+<div align="center"><img src="assets/SearchScreenS.png" height=640px alt="Movie details screenshot"></div>
+<p style="text-align: center;"><em>Img-1. Search Movie Screen</em></p>
+
+
+[//]: # (![Movie search screenshot]&#40;assets/SearchScreen.png?raw=true&#41;)
 
 ## <br/><br/>Built With :toolbox:
 
@@ -40,7 +46,7 @@ something.***
 
 - Clone this repository
 - Register in  [TMDB](https://developers.themoviedb.org/) and get the authorization token. Copy it
-  and paste to local.properties in main project catalog.
+  and paste to local.properties in main project catalog.</br>
   <img src=https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg alt="themoviedb api logo" height="50px">
 - Build the application
 

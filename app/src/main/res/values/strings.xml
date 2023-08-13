@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WhatInCinema</string>
+    <string name="app_name">What In Cinema</string>
     <string name="screen_title_movies">Movies</string>
     <string name="screen_tittle_movie">Movie Details</string>
 
