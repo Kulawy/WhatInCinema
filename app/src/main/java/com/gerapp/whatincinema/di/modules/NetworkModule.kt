@@ -9,6 +9,8 @@ import com.gerapp.whatincinema.data.network.api.TheMovieDbSearchApi
 import com.gerapp.whatincinema.data.network.interceptor.AuthorizationInterceptor
 import com.gerapp.whatincinema.data.network.interceptor.CacheInterceptor
 import com.gerapp.whatincinema.data.network.interceptor.OfflineCacheInterceptor
+import com.gerapp.whatincinema.data.network.mapper.NetworkResponseMapper
+import com.gerapp.whatincinema.data.network.mapper.NetworkResponseRetrofitMapper
 import com.gerapp.whatincinema.data.network.persistance.AuthPersistentStorage
 import com.gerapp.whatincinema.data.network.persistance.AuthPersistentStorageLocalProperties
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -23,9 +25,9 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -102,4 +104,9 @@ object NetworkModule {
     @Provides
     internal fun provideTheMovieDbSearchApi(@Named(SEARCH_API) retrofit: Retrofit) =
         retrofit.create(TheMovieDbSearchApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideNetworkResponseMapper(): NetworkResponseMapper =
+        NetworkResponseRetrofitMapper()
 }

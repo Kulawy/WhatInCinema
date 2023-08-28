@@ -50,7 +50,7 @@ import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest.Builder
 import com.gerapp.whatincinema.data.ImagePathProvider
-import com.gerapp.whatincinema.domain.data.MovieSnap
+import com.gerapp.whatincinema.domain.model.MovieSnap
 import com.gerapp.whatincinema.ui.utils.LocalAnim
 import timber.log.Timber
 

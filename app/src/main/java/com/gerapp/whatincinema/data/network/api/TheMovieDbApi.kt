@@ -11,5 +11,5 @@ interface TheMovieDbApi {
     suspend fun getNowPlaying(@Query("page") page: Int): NowPlayingResponseDto
 
     @GET("{movie_id}")
-    suspend fun movieDetails(@Path("movie_id") movieId: Int): MovieDetailsDto?
+    suspend fun movieDetails(@Path("movie_id") movieId: Int): MovieDetailsDto
 }

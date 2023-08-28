@@ -69,14 +69,7 @@ class MovieDetailsViewModel @Inject constructor(
                 result.fold(
                     {
                         Result.success(
-                            MovieDetailsUiModel(
-                                movieId = it.id,
-                                title = it.title ?: "",
-                                releaseDate = it.releaseDate ?: "",
-                                overview = it.overview ?: "",
-                                posterPath = it.posterPath ?: "",
-                                voteAverage = it.voteAverage ?: 0.0F,
-                            ),
+                            MovieDetailsUiModel(it),
                         )
                     },
                     {

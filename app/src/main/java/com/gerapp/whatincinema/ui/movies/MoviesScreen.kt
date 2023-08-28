@@ -23,7 +23,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.gerapp.whatincinema.R
-import com.gerapp.whatincinema.domain.data.MovieSnap
+import com.gerapp.whatincinema.domain.model.MovieSnap
 import com.gerapp.whatincinema.ui.component.ErrorDialog
 import com.gerapp.whatincinema.ui.component.LoadingCircular
 import com.gerapp.whatincinema.ui.component.MoviesSearchBar
@@ -66,9 +66,7 @@ fun MoviesScreen(
     }
 
     LaunchedEffect("MovieScreenEffects") {
-        viewModel.uiEffect
-            .onEach { handleUiEffects(it as MoviesUiEffect) }
-            .launchIn(this)
+        viewModel.uiEffect.onEach { handleUiEffects(it as MoviesUiEffect) }.launchIn(this)
     }
 
     Scaffold(
@@ -112,10 +110,10 @@ fun MoviesList(
         items(movies.itemCount) { index ->
             movies[index]?.let { movie ->
                 MovieCard(
-                    title = movie.title ?: "",
-                    releaseDate = movie.releaseDate ?: "",
+                    title = movie.title,
+                    releaseDate = movie.releaseDate ?: stringResource(id = R.string.no_data),
                     isFavourite = favouriteIdsList.contains(movie.id),
-                    imagePath = movie.posterPath ?: "",
+                    imagePath = movie.posterPath,
                     onMovieClick = {
                         movie.id.let {
                             Timber.d("DEBUG MOVIE CLICKED ID: $it")

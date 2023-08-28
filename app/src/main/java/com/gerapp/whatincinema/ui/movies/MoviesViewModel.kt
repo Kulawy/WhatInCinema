@@ -8,10 +8,10 @@ import androidx.paging.cachedIn
 import com.gerapp.whatincinema.base.MviViewModel
 import com.gerapp.whatincinema.di.DefaultDispatcher
 import com.gerapp.whatincinema.di.IoDispatcher
-import com.gerapp.whatincinema.domain.data.MovieSnap
 import com.gerapp.whatincinema.domain.favourite.FavouriteAddUseCase
 import com.gerapp.whatincinema.domain.favourite.FavouriteDeleteUseCase
 import com.gerapp.whatincinema.domain.favourite.FetchFavouritesUseCase
+import com.gerapp.whatincinema.domain.model.MovieSnap
 import com.gerapp.whatincinema.domain.movie.FetchMoviesUseCase
 import com.gerapp.whatincinema.domain.search.SearchMovieUseCase
 import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OnConnectingToMoviesError

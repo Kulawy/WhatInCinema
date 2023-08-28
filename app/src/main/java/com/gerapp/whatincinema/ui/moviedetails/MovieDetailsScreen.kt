@@ -27,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +44,7 @@ import androidx.work.ListenableWorker
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.gerapp.whatincinema.R
+import com.gerapp.whatincinema.base.UiEffect
 import com.gerapp.whatincinema.data.ImagePathProvider
 import com.gerapp.whatincinema.ui.component.ErrorDialog
 import com.gerapp.whatincinema.ui.component.LoadingCircular
@@ -50,10 +52,18 @@ import com.gerapp.whatincinema.ui.model.MovieDetailsUiModel
 import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiIntent.FavouriteChange
 import com.gerapp.whatincinema.ui.theme.Typography
 import com.gerapp.whatincinema.ui.utils.LocalDim
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint(
+    "UnusedMaterial3ScaffoldPaddingParameter",
+    "FlowOperatorInvokedInComposition",
+    "CoroutineCreationDuringComposition",
+)
 @Composable
 fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
@@ -62,8 +72,14 @@ fun MovieDetailsScreen(
     movieId: Int = -1,
 ) {
     Timber.d("MOVIE DETAILS SCREEN RUN")
+    val scope = rememberCoroutineScope()
     viewModel.sendIntent(MovieDetailsUiIntent.LoadDetails(movieId))
     val flowState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    viewModel.uiEffect
+        .onEach { onUiEffect(it) }
+        .flowOn(Dispatchers.Main)
+        .launchIn(scope)
 
     Scaffold(
         modifier = modifier
@@ -152,18 +168,22 @@ fun MovieDetailsContent(modifier: Modifier, movieDetails: MovieDetailsUiModel) {
         ),
     ) {
         MovieDetailsTitleComponent(movieDetails.title)
-        MovieDetailsInfoComponent(
-            stringResource(id = R.string.date_label),
-            movieDetails.releaseDate,
-        )
+        movieDetails.releaseDate?.let {
+            MovieDetailsInfoComponent(
+                stringResource(id = R.string.date_label),
+                it,
+            )
+        }
         MovieDetailsInfoComponent(
             stringResource(id = R.string.rate_label),
             movieDetails.voteAverage.toString(),
         )
-        MovieDetailsInfoComponent(
-            stringResource(id = R.string.description_label),
-            movieDetails.overview,
-        )
+        movieDetails.overview?.let {
+            MovieDetailsInfoComponent(
+                stringResource(id = R.string.description_label),
+                it,
+            )
+        }
     }
 }
 
@@ -225,6 +245,10 @@ fun FavouriteIcon(modifier: Modifier, onFavouriteClick: () -> Unit, isFavourite:
             tint = iconColor,
         )
     }
+}
+
+fun onUiEffect(uiEffect: UiEffect) {
+    // TODO: Handle UI Effect
 }
 
 @Preview

@@ -2,4 +2,5 @@
 <resources>
     <dimen name="item_rounded_corner">25dp</dimen>
     <dimen name="item_elevation">12dp</dimen>
+    <dimen name="no_data">0.0</dimen>
 </resources>
