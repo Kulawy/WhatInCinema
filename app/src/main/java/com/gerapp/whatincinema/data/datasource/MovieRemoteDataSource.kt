@@ -1,9 +1,10 @@
 package com.gerapp.whatincinema.data.datasource
 
-import com.gerapp.whatincinema.domain.data.MovieDetails
-import com.gerapp.whatincinema.domain.data.MovieSnap
+import com.gerapp.whatincinema.data.network.model.MovieDetailsDto
+import com.gerapp.whatincinema.data.network.model.MovieSnapDto
+import com.gerapp.whatincinema.data.network.model.NetworkResponse
 
 interface MovieRemoteDataSource {
-    suspend fun getMovies(page: Int): List<MovieSnap>
-    suspend fun getMovie(movieId: Int): MovieDetails?
+    suspend fun getMovies(page: Int): NetworkResponse<List<MovieSnapDto>>
+    suspend fun getMovie(movieId: Int): NetworkResponse<MovieDetailsDto>
 }

@@ -1,6 +1,5 @@
 package com.gerapp.whatincinema.data.network.model
 
-import com.gerapp.whatincinema.domain.data.MovieSnap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -20,22 +19,4 @@ data class MovieSnapDto(
     @SerialName("video") var video: Boolean? = null,
     @SerialName("vote_average") var voteAverage: Double? = null,
     @SerialName("vote_count") var voteCount: Int? = null,
-) : DtoModel {
-    override fun toDomain(): MovieSnap =
-        MovieSnap(
-            id,
-            adult,
-            backdropPath,
-            genreIds,
-            originalLanguage,
-            originalTitle,
-            overview,
-            popularity,
-            posterPath,
-            releaseDate,
-            title,
-            video,
-            voteAverage,
-            voteCount,
-        )
-}
+)

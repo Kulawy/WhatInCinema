@@ -31,7 +31,8 @@ android {
             buildConfigField("String", "AUTH_TOKEN", "\"" + localProperties['AUTH_TOKEN'] + "\"")
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -64,6 +65,9 @@ dependencies {
     //CORE
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.work:work-runtime-ktx:2.8.1'
 
     //COMPOSE
     implementation 'androidx.activity:activity-compose:1.7.2'
@@ -107,11 +111,6 @@ dependencies {
 
     //HILT
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.work:work-runtime-ktx:2.8.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-compose:$compose_hilt_navigation_version"
 
@@ -122,9 +121,9 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-paging:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
 
     //TESTS
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5_version"
     testImplementation "org.junit.jupiter:junit-jupiter-params:$junit5_version"

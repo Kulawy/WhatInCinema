@@ -4,6 +4,8 @@ import android.content.Context
 import com.gerapp.whatincinema.BuildConfig
 import com.gerapp.whatincinema.data.DataConstants.NOW_PLAYING_API_URL
 import com.gerapp.whatincinema.data.DataConstants.SEARCH_API_URL
+import com.gerapp.whatincinema.data.mapper.NetworkResponseMapper
+import com.gerapp.whatincinema.data.mapper.NetworkResponseRetrofitMapper
 import com.gerapp.whatincinema.data.network.api.TheMovieDbApi
 import com.gerapp.whatincinema.data.network.api.TheMovieDbSearchApi
 import com.gerapp.whatincinema.data.network.interceptor.AuthorizationInterceptor
@@ -23,9 +25,9 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -35,7 +37,7 @@ object NetworkModule {
     private const val NOW_PLAYING_API = "now_playing.api"
     private const val SEARCH_API = "search.api"
 
-    const val TIMEOUT_IN_SECONDS = 15
+    private const val TIMEOUT_IN_SECONDS = 15
     private val contentType = "application/json".toMediaType()
     private val json = Json { ignoreUnknownKeys = true }
     private const val cacheSize = (10 * 1024 * 1024).toLong() // 10 MB cache size
@@ -102,4 +104,9 @@ object NetworkModule {
     @Provides
     internal fun provideTheMovieDbSearchApi(@Named(SEARCH_API) retrofit: Retrofit) =
         retrofit.create(TheMovieDbSearchApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideNetworkResponseMapper(): NetworkResponseMapper =
+        NetworkResponseRetrofitMapper()
 }

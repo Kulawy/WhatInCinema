@@ -2,7 +2,7 @@ package com.gerapp.whatincinema.ui.movies
 
 import androidx.paging.PagingData
 import com.gerapp.whatincinema.base.UiState
-import com.gerapp.whatincinema.domain.data.MovieSnap
+import com.gerapp.whatincinema.domain.model.MovieSnap
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 

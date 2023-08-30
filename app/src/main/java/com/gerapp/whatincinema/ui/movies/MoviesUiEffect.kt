@@ -4,7 +4,7 @@ import com.gerapp.whatincinema.base.UiEffect
 
 sealed class MoviesUiEffect : UiEffect {
     data class OpenMovieDetailsScreen(val movieId: Int) : MoviesUiEffect()
-    object OnConnectingToMoviesError : MoviesUiEffect()
-    object OnSearchMoviesError : MoviesUiEffect()
-    object OnLoadingFavouriteMoviesError : MoviesUiEffect()
+    object OnConnectionError : MoviesUiEffect()
+    object OnServerError : MoviesUiEffect()
+    object OnUnspecifiedError : MoviesUiEffect()
 }

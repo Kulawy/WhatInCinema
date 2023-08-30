@@ -6,6 +6,9 @@
     <string name="dialog_error_title">Error</string>
     <string name="dialog_error_message">Movie can\'t be fetched</string>
     <string name="dialog_confirmation">OK</string>
+    <string name="dialog_try_again">TRY AGAIN</string>
+    <string name="dialog_connection_error_title">Connection Error</string>
+    <string name="dialog_connection_error_msg">Check Your connection and try again</string>
 
     <string name="preview_title">Title Sample</string>
     <string name="preview_text">Text Sample</string>
@@ -22,7 +25,7 @@
     <string name="icn_error_content_description">Error on fetching image</string>
     <string name="icn_favourite_content_description">Favourite Icon</string>
 
-
+    <string name="no_data">no data</string>
 
 
 

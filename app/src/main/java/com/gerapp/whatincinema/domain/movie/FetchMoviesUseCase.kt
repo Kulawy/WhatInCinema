@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.gerapp.whatincinema.base.FlowUseCase
 import com.gerapp.whatincinema.di.IoDispatcher
-import com.gerapp.whatincinema.domain.data.MovieSnap
+import com.gerapp.whatincinema.domain.model.MovieSnap
 import com.gerapp.whatincinema.domain.repository.MovieRepository
 import com.gerapp.whatincinema.extensions.emitSuccess
 import com.gerapp.whatincinema.ui.movies.MoviesSource
