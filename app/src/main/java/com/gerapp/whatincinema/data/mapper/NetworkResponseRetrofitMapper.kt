@@ -1,10 +1,10 @@
-package com.gerapp.whatincinema.data.network.mapper
+package com.gerapp.whatincinema.data.mapper
 
+import com.gerapp.whatincinema.base.errors.ApiThrowable
+import com.gerapp.whatincinema.base.errors.ConnectionThrowable
 import com.gerapp.whatincinema.data.network.model.NetworkResponse
 import com.gerapp.whatincinema.domain.mapper.DtoResponseIterableMapper
 import com.gerapp.whatincinema.domain.mapper.DtoResponseMapper
-import com.gerapp.whatincinema.domain.model.ApiThrowable
-import com.gerapp.whatincinema.domain.model.ConnectionThrowable
 import javax.inject.Inject
 
 class NetworkResponseRetrofitMapper @Inject constructor() : NetworkResponseMapper {
@@ -24,7 +24,7 @@ class NetworkResponseRetrofitMapper @Inject constructor() : NetworkResponseMappe
 
             is NetworkResponse.Error.NetworkError -> Result.failure(
                 ConnectionThrowable(
-                    networkResponse.network_msg,
+                    networkResponse.networkMsg,
                 ),
             )
 
@@ -52,7 +52,7 @@ class NetworkResponseRetrofitMapper @Inject constructor() : NetworkResponseMappe
 
             is NetworkResponse.Error.NetworkError -> Result.failure(
                 ConnectionThrowable(
-                    networkResponse.network_msg,
+                    networkResponse.networkMsg,
                 ),
             )
 

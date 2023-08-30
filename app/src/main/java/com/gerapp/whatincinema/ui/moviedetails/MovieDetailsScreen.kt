@@ -26,8 +26,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,20 +42,20 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.work.ListenableWorker
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.gerapp.whatincinema.R
-import com.gerapp.whatincinema.base.UiEffect
 import com.gerapp.whatincinema.data.ImagePathProvider
 import com.gerapp.whatincinema.ui.component.ErrorDialog
 import com.gerapp.whatincinema.ui.component.LoadingCircular
-import com.gerapp.whatincinema.ui.model.MovieDetailsUiModel
+import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiEffect.OnCloseScreen
+import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiEffect.OnFetchDetailsConnectionError
+import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiEffect.OnServerError
+import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiEffect.OnUnspecifiedError
+import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiIntent.CloseScreen
 import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiIntent.FavouriteChange
 import com.gerapp.whatincinema.ui.theme.Typography
 import com.gerapp.whatincinema.ui.utils.LocalDim
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
@@ -72,14 +74,20 @@ fun MovieDetailsScreen(
     movieId: Int = -1,
 ) {
     Timber.d("MOVIE DETAILS SCREEN RUN")
-    val scope = rememberCoroutineScope()
     viewModel.sendIntent(MovieDetailsUiIntent.LoadDetails(movieId))
     val flowState by viewModel.uiState.collectAsStateWithLifecycle()
+    val networkErrorDialogShow = remember { mutableStateOf(false) }
 
-    viewModel.uiEffect
-        .onEach { onUiEffect(it) }
-        .flowOn(Dispatchers.Main)
-        .launchIn(scope)
+    LaunchedEffect("MovieScreenEffects") {
+        viewModel.uiEffect.onEach {
+            when (it) {
+                is OnCloseScreen -> onBackClick()
+                is OnFetchDetailsConnectionError -> networkErrorDialogShow.value = true
+                is OnServerError -> {}
+                is OnUnspecifiedError -> {}
+            }
+        }.launchIn(this)
+    }
 
     Scaffold(
         modifier = modifier
@@ -135,24 +143,26 @@ fun MovieDetailsScreen(
                 )
             }
         }
-
-        flowState.error?.let { error ->
-            ErrorDialog(
-                modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.dialog_error_title),
-                msg = stringResource(id = R.string.dialog_error_message),
-                onConfirm = {
-                    ListenableWorker.Result.retry()
-                },
-                onDismissRequest = {},
-            )
-        }
-
         if (flowState.isLoading) {
             LoadingCircular(
                 modifier = modifier
                     .padding(paddingValues)
                     .fillMaxSize(),
+            )
+        }
+        if (networkErrorDialogShow.value) {
+            ErrorDialog(
+                onDismissRequest = {
+                    networkErrorDialogShow.value = false
+                    viewModel.sendIntent(CloseScreen)
+                },
+                onConfirm = {
+                    networkErrorDialogShow.value = false
+                    viewModel.resendLastIntent()
+                },
+                isDisplayed = networkErrorDialogShow.value,
+                title = stringResource(id = R.string.dialog_connection_error_title),
+                msg = stringResource(id = R.string.dialog_connection_error_msg),
             )
         }
     }
@@ -245,10 +255,6 @@ fun FavouriteIcon(modifier: Modifier, onFavouriteClick: () -> Unit, isFavourite:
             tint = iconColor,
         )
     }
-}
-
-fun onUiEffect(uiEffect: UiEffect) {
-    // TODO: Handle UI Effect
 }
 
 @Preview

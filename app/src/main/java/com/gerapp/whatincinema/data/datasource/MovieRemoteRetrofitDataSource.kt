@@ -1,7 +1,7 @@
 package com.gerapp.whatincinema.data.datasource
 
+import com.gerapp.whatincinema.data.mapper.ResponseApiWrapper
 import com.gerapp.whatincinema.data.network.api.TheMovieDbApi
-import com.gerapp.whatincinema.data.network.mapper.ResponseApiWrapper
 import com.gerapp.whatincinema.data.network.model.MovieSnapDto
 import com.gerapp.whatincinema.data.network.model.NetworkResponse
 import javax.inject.Inject

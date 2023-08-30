@@ -14,7 +14,6 @@ val Brown60 = Color(0xFFba8563)
 val Brown80 = Color(0xFF6d4833)
 val Brown100 = Color(0xFF321e13)
 
-
 val BackgroundLight = Color(0xFFC7B293)
 val BackgroundDark = Color(0xFF443C30)
 

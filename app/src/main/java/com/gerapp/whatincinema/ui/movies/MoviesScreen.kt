@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,9 +26,13 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.gerapp.whatincinema.R
 import com.gerapp.whatincinema.domain.model.MovieSnap
+import com.gerapp.whatincinema.ui.component.ErrorAnnouncement
 import com.gerapp.whatincinema.ui.component.ErrorDialog
 import com.gerapp.whatincinema.ui.component.LoadingCircular
 import com.gerapp.whatincinema.ui.component.MoviesSearchBar
+import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OnConnectionError
+import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OnServerError
+import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OnUnspecifiedError
 import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OpenMovieDetailsScreen
 import com.gerapp.whatincinema.ui.movies.MoviesUiIntent.FavouriteIconClicked
 import com.gerapp.whatincinema.ui.movies.MoviesUiIntent.MovieItemClicked
@@ -52,21 +58,22 @@ fun MoviesScreen(
     viewModel: MoviesViewModel = hiltViewModel(),
 ) {
     val moviesScreenUiState by viewModel.uiState.collectAsState()
+    val networkErrorDialogShow = remember { mutableStateOf(false) }
     viewModel.sendIntent(MoviesScreenStart)
 
     val onSearchRun: (String?) -> Unit = { query ->
         viewModel.sendIntent(SearchMoviesByQuery(query))
     }
 
-    fun handleUiEffects(uiEffect: MoviesUiEffect) {
-        when (uiEffect) {
-            is OpenMovieDetailsScreen -> navigateToMovieDetails(uiEffect.movieId)
-            else -> {}
-        }
-    }
-
     LaunchedEffect("MovieScreenEffects") {
-        viewModel.uiEffect.onEach { handleUiEffects(it as MoviesUiEffect) }.launchIn(this)
+        viewModel.uiEffect.onEach {
+            when (it) {
+                is OpenMovieDetailsScreen -> navigateToMovieDetails(it.movieId)
+                is OnConnectionError -> networkErrorDialogShow.value = true
+                is OnServerError -> {}
+                is OnUnspecifiedError -> {}
+            }
+        }.launchIn(this)
     }
 
     Scaffold(
@@ -89,6 +96,15 @@ fun MoviesScreen(
                 onMovieClick = { movieId -> viewModel.sendIntent(MovieItemClicked(movieId)) },
                 onFavouriteClick = { movieId -> viewModel.sendIntent(FavouriteIconClicked(movieId)) },
             )
+            if (networkErrorDialogShow.value) {
+                ErrorDialog(
+                    onDismissRequest = { networkErrorDialogShow.value = false },
+                    onConfirm = { networkErrorDialogShow.value = false },
+                    isDisplayed = networkErrorDialogShow.value,
+                    title = stringResource(id = R.string.dialog_connection_error_title),
+                    msg = stringResource(id = R.string.dialog_connection_error_msg),
+                )
+            }
         }
     }
 }
@@ -138,14 +154,13 @@ fun MoviesList(
                     }
 
                     loadState.refresh is LoadState.Error || loadState.append is LoadState.Error -> {
-                        ErrorDialog(
+                        ErrorAnnouncement(
                             modifier = Modifier.fillMaxSize(),
                             title = stringResource(id = R.string.dialog_error_title),
                             msg = stringResource(id = R.string.dialog_error_message),
                             onConfirm = {
                                 retry()
                             },
-                            onDismissRequest = {},
                         )
                     }
                 }

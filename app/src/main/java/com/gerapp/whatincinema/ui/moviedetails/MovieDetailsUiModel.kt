@@ -1,4 +1,4 @@
-package com.gerapp.whatincinema.ui.model
+package com.gerapp.whatincinema.ui.moviedetails
 
 import com.gerapp.whatincinema.domain.model.MovieDetails
 

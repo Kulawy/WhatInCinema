@@ -3,12 +3,16 @@ package com.gerapp.whatincinema.ui.moviedetails
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.gerapp.whatincinema.base.MviViewModel
+import com.gerapp.whatincinema.base.errors.ConnectionThrowable
 import com.gerapp.whatincinema.di.DefaultDispatcher
 import com.gerapp.whatincinema.domain.favourite.FavouriteAddUseCase
 import com.gerapp.whatincinema.domain.favourite.FavouriteCheckUseCase
 import com.gerapp.whatincinema.domain.favourite.FavouriteDeleteUseCase
 import com.gerapp.whatincinema.domain.movie.GetMovieDetailsUseCase
-import com.gerapp.whatincinema.ui.model.MovieDetailsUiModel
+import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiEffect.OnCloseScreen
+import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiEffect.OnFetchDetailsConnectionError
+import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiEffect.OnUnspecifiedError
+import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiIntent.CloseScreen
 import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiIntent.FavouriteChange
 import com.gerapp.whatincinema.ui.moviedetails.MovieDetailsUiIntent.LoadDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,6 +47,7 @@ class MovieDetailsViewModel @Inject constructor(
         when (intent) {
             is FavouriteChange -> onFavouriteChange()
             is LoadDetails -> fetchMovieDetails(intent.movieId)
+            is CloseScreen -> publishEffect(OnCloseScreen)
         }
     }
 
@@ -83,6 +88,10 @@ class MovieDetailsViewModel @Inject constructor(
             movieDetailsResult.onSuccess {
                 publishState { copy(movie = it) }
             }
+            movieDetailsResult.onFailure {
+                Timber.d("Details Failure: $it")
+                fetchMovieDetailsFailureHandler(it)
+            }
         }.onCompletion {
             publishState { copy(isLoading = false) }
         }.launchIn(viewModelScope)
@@ -93,4 +102,10 @@ class MovieDetailsViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    private fun fetchMovieDetailsFailureHandler(error: Throwable) =
+        when (error) {
+            is ConnectionThrowable -> publishEffect(OnFetchDetailsConnectionError)
+            else -> publishEffect(OnUnspecifiedError)
+        }
 }

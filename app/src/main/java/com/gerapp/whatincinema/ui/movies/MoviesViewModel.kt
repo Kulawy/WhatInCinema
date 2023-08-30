@@ -6,6 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.gerapp.whatincinema.base.MviViewModel
+import com.gerapp.whatincinema.base.errors.ConnectionThrowable
 import com.gerapp.whatincinema.di.DefaultDispatcher
 import com.gerapp.whatincinema.di.IoDispatcher
 import com.gerapp.whatincinema.domain.favourite.FavouriteAddUseCase
@@ -14,9 +15,8 @@ import com.gerapp.whatincinema.domain.favourite.FetchFavouritesUseCase
 import com.gerapp.whatincinema.domain.model.MovieSnap
 import com.gerapp.whatincinema.domain.movie.FetchMoviesUseCase
 import com.gerapp.whatincinema.domain.search.SearchMovieUseCase
-import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OnConnectingToMoviesError
-import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OnLoadingFavouriteMoviesError
-import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OnSearchMoviesError
+import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OnConnectionError
+import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OnUnspecifiedError
 import com.gerapp.whatincinema.ui.movies.MoviesUiEffect.OpenMovieDetailsScreen
 import com.gerapp.whatincinema.ui.movies.MoviesUiIntent.FavouriteIconClicked
 import com.gerapp.whatincinema.ui.movies.MoviesUiIntent.MovieItemClicked
@@ -72,7 +72,7 @@ class MoviesViewModel @Inject internal constructor(
                         updateMovieStream(it)
                         refreshFavourites()
                     }.onFailure {
-                        publishEffect(OnConnectingToMoviesError)
+                        publishEffect(OnUnspecifiedError)
                     }
                 }.launchIn(viewModelScope)
         }
@@ -98,7 +98,10 @@ class MoviesViewModel @Inject internal constructor(
                         }
                     },
                     {
-                        publishEffect(OnSearchMoviesError)
+                        when (it) {
+                            is ConnectionThrowable -> publishEffect(OnConnectionError)
+                            else -> publishEffect(OnUnspecifiedError)
+                        }
                     },
                 )
             }.flowOn(defaultDispatcher).launchIn(viewModelScope)
@@ -125,7 +128,7 @@ class MoviesViewModel @Inject internal constructor(
             result.fold(
                 { publishState { copy(favouriteIdsList = it) } },
                 {
-                    publishEffect(OnLoadingFavouriteMoviesError)
+                    publishEffect(OnUnspecifiedError)
                 },
             )
         }

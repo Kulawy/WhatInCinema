@@ -4,13 +4,13 @@ import android.content.Context
 import com.gerapp.whatincinema.BuildConfig
 import com.gerapp.whatincinema.data.DataConstants.NOW_PLAYING_API_URL
 import com.gerapp.whatincinema.data.DataConstants.SEARCH_API_URL
+import com.gerapp.whatincinema.data.mapper.NetworkResponseMapper
+import com.gerapp.whatincinema.data.mapper.NetworkResponseRetrofitMapper
 import com.gerapp.whatincinema.data.network.api.TheMovieDbApi
 import com.gerapp.whatincinema.data.network.api.TheMovieDbSearchApi
 import com.gerapp.whatincinema.data.network.interceptor.AuthorizationInterceptor
 import com.gerapp.whatincinema.data.network.interceptor.CacheInterceptor
 import com.gerapp.whatincinema.data.network.interceptor.OfflineCacheInterceptor
-import com.gerapp.whatincinema.data.network.mapper.NetworkResponseMapper
-import com.gerapp.whatincinema.data.network.mapper.NetworkResponseRetrofitMapper
 import com.gerapp.whatincinema.data.network.persistance.AuthPersistentStorage
 import com.gerapp.whatincinema.data.network.persistance.AuthPersistentStorageLocalProperties
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -37,7 +37,7 @@ object NetworkModule {
     private const val NOW_PLAYING_API = "now_playing.api"
     private const val SEARCH_API = "search.api"
 
-    const val TIMEOUT_IN_SECONDS = 15
+    private const val TIMEOUT_IN_SECONDS = 15
     private val contentType = "application/json".toMediaType()
     private val json = Json { ignoreUnknownKeys = true }
     private const val cacheSize = (10 * 1024 * 1024).toLong() // 10 MB cache size

@@ -1,7 +1,7 @@
 package com.gerapp.whatincinema.data.repository
 
 import com.gerapp.whatincinema.data.datasource.SearchRemoteDataSource
-import com.gerapp.whatincinema.data.network.mapper.NetworkResponseMapper
+import com.gerapp.whatincinema.data.mapper.NetworkResponseMapper
 import com.gerapp.whatincinema.domain.mapper.MovieSnapMapper
 import com.gerapp.whatincinema.domain.model.MovieSnap
 import com.gerapp.whatincinema.domain.repository.SearchRepository

@@ -1,4 +1,4 @@
-package com.gerapp.whatincinema.data.network.mapper
+package com.gerapp.whatincinema.data.mapper
 
 import com.gerapp.whatincinema.data.network.model.NetworkResponse
 import com.gerapp.whatincinema.domain.mapper.DtoResponseIterableMapper

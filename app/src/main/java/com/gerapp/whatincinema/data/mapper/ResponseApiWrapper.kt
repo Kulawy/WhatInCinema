@@ -1,4 +1,4 @@
-package com.gerapp.whatincinema.data.network.mapper
+package com.gerapp.whatincinema.data.mapper
 
 import com.gerapp.whatincinema.data.network.model.NetworkResponse
 import retrofit2.HttpException
@@ -15,9 +15,12 @@ class ResponseApiWrapper @Inject constructor() {
     fun <T> wrapError(throwable: Throwable): NetworkResponse<T> {
         return when (throwable) {
             is HttpException -> {
-                apiError(throwable.code(), throwable.message())
+                if (throwable.code() == 504) {
+                    networkError(throwable.message ?: "Connection error")
+                } else {
+                    apiError(throwable.code(), throwable.message())
+                }
             }
-
             is IOException -> networkError(throwable.message ?: "Connection error")
             is IllegalStateException -> internalError(throwable.cause!!)
             else -> internalError(throwable)

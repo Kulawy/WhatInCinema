@@ -1,5 +1,6 @@
 package com.gerapp.whatincinema.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
@@ -48,6 +49,7 @@ val Typography.dialogTitle: TextStyle
             fontSize = 22.sp,
             lineHeight = 28.sp,
             letterSpacing = 0.sp,
+            color = MaterialTheme.colorScheme.tertiary,
         )
     }
 
@@ -60,5 +62,6 @@ val Typography.dialogText: TextStyle
             fontSize = 16.sp,
             lineHeight = 24.sp,
             letterSpacing = 0.5.sp,
+            color = MaterialTheme.colorScheme.tertiary,
         )
     }

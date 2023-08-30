@@ -31,7 +31,8 @@ android {
             buildConfigField("String", "AUTH_TOKEN", "\"" + localProperties['AUTH_TOKEN'] + "\"")
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
