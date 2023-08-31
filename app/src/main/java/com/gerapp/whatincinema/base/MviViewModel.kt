@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-abstract class MviViewModel<T : UiIntent, U : UiState>(
+abstract class MviViewModel<T : UiIntent, U : UiState, V : UiEffect>(
     initialState: U,
     private val savedStateHandle: SavedStateHandle,
 ) : BaseViewModel() {
@@ -20,7 +20,7 @@ abstract class MviViewModel<T : UiIntent, U : UiState>(
 
 //    val uiState = savedStateHandle.getStateFlow("uiState", initialState)
 
-    private val _uiEffect = Channel<UiEffect>(Channel.BUFFERED)
+    private val _uiEffect = Channel<V>(Channel.BUFFERED)
     val uiEffect = _uiEffect.receiveAsFlow()
 
     private val _uiIntent = MutableSharedFlow<T>(INTENT_REPLAY_AMOUNT)
@@ -44,7 +44,7 @@ abstract class MviViewModel<T : UiIntent, U : UiState>(
 //        savedStateHandle["uiState"] = transformation(uiState.value)
     }
 
-    protected fun publishEffect(effect: UiEffect) {
+    protected fun publishEffect(effect: V) {
         viewModelScope.launch { _uiEffect.send(effect) }
     }
 

@@ -42,7 +42,7 @@ class MoviesViewModel @Inject internal constructor(
     savedStateHandle: SavedStateHandle,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-) : MviViewModel<MoviesUiIntent, MoviesScreenUiState>(
+) : MviViewModel<MoviesUiIntent, MoviesScreenUiState, MoviesUiEffect>(
     MoviesScreenUiState(isLoading = true),
     savedStateHandle,
 ) {

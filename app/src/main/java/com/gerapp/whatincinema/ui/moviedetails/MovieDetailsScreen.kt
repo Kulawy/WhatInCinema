@@ -118,7 +118,7 @@ fun MovieDetailsScreen(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "",
                             modifier = Modifier,
-                            tint = Color.Black,
+                            tint = Color.White,
                         )
                     }
                     FavouriteIcon(
@@ -241,7 +241,7 @@ fun MovieDetailsImage(
 
 @Composable
 fun FavouriteIcon(modifier: Modifier, onFavouriteClick: () -> Unit, isFavourite: Boolean) {
-    val iconColor = if (isFavourite) Color.Yellow else Color.Gray
+    val iconColor = if (isFavourite) Color.Yellow else Color.White
     IconButton(
         onClick = onFavouriteClick,
         modifier = modifier

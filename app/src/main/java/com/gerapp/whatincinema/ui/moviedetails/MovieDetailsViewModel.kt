@@ -36,7 +36,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val favouriteDeleteUseCase: FavouriteDeleteUseCase,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     savedStateHandle: SavedStateHandle,
-) : MviViewModel<MovieDetailsUiIntent, MovieDetailsScreenUiState>(
+) : MviViewModel<MovieDetailsUiIntent, MovieDetailsScreenUiState, MovieDetailsUiEffect>(
     MovieDetailsScreenUiState(
         isLoading = true,
     ),
