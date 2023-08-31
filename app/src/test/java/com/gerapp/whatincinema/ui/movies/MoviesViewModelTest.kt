@@ -18,6 +18,7 @@ import io.mockk.unmockkAll
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
@@ -51,10 +52,10 @@ internal class MoviesViewModelTest {
     lateinit var savedStateHandle: SavedStateHandle
 
     @TestDispatcher
-    lateinit var defaultDispatcher: CoroutineDispatcher
+    val defaultDispatcher: CoroutineDispatcher = StandardTestDispatcher()
 
     @TestDispatcher
-    lateinit var ioDispatcher: CoroutineDispatcher
+    val ioDispatcher: CoroutineDispatcher = StandardTestDispatcher()
 
     @AfterEach
     fun tearDown() {
@@ -64,7 +65,6 @@ internal class MoviesViewModelTest {
     @Test
     fun `Check that MovieItemClicked triggers OpenMovieDetailsScreen`() = runTest {
         val testMovieId = 123
-
         val effects = mutableListOf<UiEffect>()
         val job = launch(UnconfinedTestDispatcher(testScheduler)) {
             sut.uiEffect.collect { effects.add(it) }
@@ -76,15 +76,4 @@ internal class MoviesViewModelTest {
 
         job.cancel()
     }
-
-//    private fun createMoviesViewModel() = MoviesViewModel(
-//        moviesUseCase = fetchMoviesUseCase,
-//        favouritesUseCase = fetchFavouritesUseCase,
-//        favouriteAddUseCase = favouriteAddUseCase,
-//        favouriteDeleteUseCase = favouriteDeleteUseCase,
-//        searchMovieUseCase = searchMovieUseCase,
-//        savedStateHandle = savedStateHandle,
-//        defaultDispatcher = defaultDispatcher,
-//        ioDispatcher = ioDispatcher,
-//    )
 }
